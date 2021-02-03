@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use File;
 
 class ProductController extends Controller
 {
@@ -26,7 +28,7 @@ class ProductController extends Controller
         $create = Product::create(
             [
                 'name' => $request->name,           // input name='name'
-                'pic' => $fileName,             // <input type='file' name='pic'>
+                'pic' => $fileName,                 // <input type='file' name='pic'>
                 'desc' => $request->desc,           // input name='desc'
                 'price' => $request->price,         // input name='price'
                 'discount' => $request->discount    // input name='discount'
@@ -114,6 +116,13 @@ class ProductController extends Controller
         }
 
         return response()->json($result);
+    }
+
+    public function detail(Request $request)
+    {
+        $data = Product::where('id', $request->id)->first();
+
+        return response()->json($data);
     }
 
     private function _hitungDiscount(float $harga, float $diskon)
